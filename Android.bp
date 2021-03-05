@@ -141,7 +141,6 @@ cc_library {
         "Errors.cpp",
         "FileMap.cpp",
         "JenkinsHash.cpp",
-        "LightRefBase.cpp",
         "NativeHandle.cpp",
         "Printer.cpp",
         "RefBase.cpp",
@@ -272,6 +271,12 @@ cc_fuzz {
     shared_libs: [
         "libutilscallstack",
     ],
+}
+
+cc_fuzz {
+    name: "libutils_fuzz_stopwatch",
+    defaults: ["libutils_fuzz_defaults"],
+    srcs: ["StopWatch_fuzz.cpp"],
 }
 
 cc_fuzz {
