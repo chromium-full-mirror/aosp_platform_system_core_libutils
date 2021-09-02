@@ -130,22 +130,11 @@ public:
             bool                removeAll(const char* other);
 
             void                toLower();
-            void                toLower(size_t start, size_t numChars);
-            void                toUpper();
-            void                toUpper(size_t start, size_t numChars);
 
 
     /*
      * These methods operate on the string as if it were a path name.
      */
-
-    /*
-     * Set the filename field to a specific value.
-     *
-     * Normalizes the filename, removing a trailing '/' if present.
-     */
-    void setPathName(const char* name);
-    void setPathName(const char* name, size_t numChars);
 
     /*
      * Get just the filename component.

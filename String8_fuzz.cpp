@@ -42,9 +42,6 @@ std::vector<std::function<void(FuzzedDataProvider*, android::String8*, android::
 
                 // Casing
                 [](FuzzedDataProvider*, android::String8* str1, android::String8*) -> void {
-                    str1->toUpper();
-                },
-                [](FuzzedDataProvider*, android::String8* str1, android::String8*) -> void {
                     str1->toLower();
                 },
                 [](FuzzedDataProvider*, android::String8* str1, android::String8* str2) -> void {
@@ -91,10 +88,6 @@ std::vector<std::function<void(FuzzedDataProvider*, android::String8*, android::
                             std::make_shared<android::String8>();
                     str1->walkPath(path_out_str.get());
                     path_out_str->clear();
-                },
-                [](FuzzedDataProvider* dataProvider, android::String8* str1,
-                   android::String8*) -> void {
-                    str1->setPathName(dataProvider->ConsumeBytesWithTerminator<char>(5).data());
                 },
                 [](FuzzedDataProvider* dataProvider, android::String8* str1,
                    android::String8*) -> void {
