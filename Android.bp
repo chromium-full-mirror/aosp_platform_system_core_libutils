@@ -58,6 +58,10 @@ cc_defaults {
     vendor_available: true,
     product_available: true,
     recovery_available: true,
+    vndk: {
+        enabled: true,
+        support_system_process: true,
+    },
     host_supported: true,
 
     cflags: [
@@ -122,8 +126,8 @@ cc_defaults {
     },
 }
 
-cc_defaults {
-    name: "libutils_impl_defaults",
+cc_library {
+    name: "libutils",
     defaults: ["libutils_defaults"],
     native_bridge_supported: true,
 
@@ -170,36 +174,10 @@ cc_defaults {
     min_sdk_version: "apex_inherit",
 
     afdo: true,
-}
-
-cc_library {
-    name: "libutils",
-    defaults: ["libutils_impl_defaults"],
-
-    vndk: {
-        enabled: true,
-        support_system_process: true,
-    },
 
     header_abi_checker: {
-        // AFDO affects weak symbols.
         diff_flags: ["-allow-adding-removing-weak-symbols"],
-        ref_dump_dirs: ["abi-dumps"],
     },
-}
-
-cc_library {
-    name: "libutils_test_compile",
-    defaults: ["libutils_impl_defaults"],
-
-    cflags: [
-        "-DCALLSTACKS=1",
-        "-DDEBUG_POLL_AND_WAKE=1",
-        "-DDEBUG_REFS=1",
-        "-DDEBUG_TOKENIZER=1",
-    ],
-
-    visibility: [":__subpackages__"],
 }
 
 cc_library {
@@ -208,10 +186,6 @@ cc_library {
     // TODO(b/153609531): remove when no longer needed.
     native_bridge_supported: true,
     min_sdk_version: "29",
-    vndk: {
-        enabled: true,
-        support_system_process: true,
-    },
 
     srcs: [
         "CallStack.cpp",
@@ -325,7 +299,6 @@ cc_test {
 
     srcs: [
         "BitSet_test.cpp",
-        "CallStack_test.cpp",
         "Errors_test.cpp",
         "FileMap_test.cpp",
         "LruCache_test.cpp",
@@ -346,14 +319,11 @@ cc_test {
                 "SystemClock_test.cpp",
             ],
             shared_libs: [
-                "libbase",
-                "libcutils",
-                "liblog",
-                "liblzma",
-                "libunwindstack",
-                "libutils",
-                "libutilscallstack",
                 "libz",
+                "liblog",
+                "libcutils",
+                "libutils",
+                "libbase",
             ],
         },
         linux: {
@@ -364,12 +334,9 @@ cc_test {
         },
         host: {
             static_libs: [
-                "libbase",
-                "liblog",
-                "liblzma",
-                "libunwindstack_no_dex",
                 "libutils",
-                "libutilscallstack",
+                "liblog",
+                "libbase",
             ],
         },
     },
