@@ -29,8 +29,6 @@ typedef const char* StringValue;
 struct ComplexKey {
     int k;
 
-    explicit ComplexKey() : k(0) { instanceCount += 1; }
-
     explicit ComplexKey(int k) : k(k) {
         instanceCount += 1;
     }
@@ -59,8 +57,6 @@ ssize_t ComplexKey::instanceCount = 0;
 struct ComplexValue {
     int v;
 
-    explicit ComplexValue() : v(0) { instanceCount += 1; }
-
     explicit ComplexValue(int v) : v(v) {
         instanceCount += 1;
     }
@@ -87,9 +83,10 @@ struct KeyWithPointer {
 
 struct KeyFailsOnCopy : public ComplexKey {
     public:
-      KeyFailsOnCopy() : ComplexKey() {}
-      KeyFailsOnCopy(const KeyFailsOnCopy& key) : ComplexKey(key) { ADD_FAILURE(); }
-      KeyFailsOnCopy(int key) : ComplexKey(key) {}
+    KeyFailsOnCopy(const KeyFailsOnCopy& key) : ComplexKey(key) {
+        ADD_FAILURE();
+    }
+    KeyFailsOnCopy(int key) : ComplexKey(key) { }
 };
 
 } // namespace
