@@ -109,11 +109,6 @@ ANDROID_BASIC_TYPES_TRAITS( unsigned long long )
 ANDROID_BASIC_TYPES_TRAITS( float )
 ANDROID_BASIC_TYPES_TRAITS( double )
 
-template<typename T> struct trait_trivial_ctor<T*>   { enum { value = true }; };
-template<typename T> struct trait_trivial_dtor<T*>   { enum { value = true }; };
-template<typename T> struct trait_trivial_copy<T*>   { enum { value = true }; };
-template<typename T> struct trait_trivial_move<T*>   { enum { value = true }; };
-
 // ---------------------------------------------------------------------------
 
 
@@ -200,7 +195,7 @@ template<typename TYPE>
 typename std::enable_if<use_trivial_move<TYPE>::value>::type
 inline
 move_forward_type(TYPE* d, const TYPE* s, size_t n = 1) {
-    memmove(reinterpret_cast<void*>(d), s, n * sizeof(TYPE));
+    memmove(d, s, n*sizeof(TYPE));
 }
 
 template<typename TYPE>
@@ -227,7 +222,7 @@ template<typename TYPE>
 typename std::enable_if<use_trivial_move<TYPE>::value>::type
 inline
 move_backward_type(TYPE* d, const TYPE* s, size_t n = 1) {
-    memmove(reinterpret_cast<void*>(d), s, n * sizeof(TYPE));
+    memmove(d, s, n*sizeof(TYPE));
 }
 
 template<typename TYPE>
